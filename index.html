@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Home - E-Commerce</title>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <header>
+        <div class="container">
+            <nav class="main-nav">
+                <a href="./index.html" class="logo">MONO</a>
+                <ul class="nav-links">
+                    <li>
+                        <a href="./index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="./products.html">Products</a>
+                    </li>
+                    <li>
+                        <button class="cart-btn">Your Cart (<span class="items-number">7</span>)</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+                <p class="hero-subtitle">New Collection 2026</p>
+
+                <h1>
+                    Minimal style for
+                    <span>everyday wear</span>
+                </h1>
+
+                <a href="./products.html" class="shop-btn">
+                    Shop Now
+                </a>
+            </div>
+        </section>
+
+        <!-- FEATURED -->
+        <section class="featured-products">
+            <div class="container">
+                <h2>Featured Products</h2>
+                <ul class="featured-product-list">
+
+                </ul>
+            </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section class="benefits">
+            <div class="container">
+                <h2>Why Shop With Us</h2>
+                <div class="benefits-list">
+                    <div class="benefit">
+                        <i class="fa-solid fa-truck"></i>
+                        <p>Free Shipping</p>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <p>Easy Returns</p>
+                    </div>
+
+                    <div class="benefit">
+                        <i class="fa-solid fa-lock"></i>
+                        <p>Secure Payment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWSLETTER -->
+        <section class="newsletter">
+            <div class="container">
+                <div class="newsletter-content">
+                    <h2>Stay Updated</h2>
+                    <p>Get notified about new arrivals.</p>
+                    <form class="newsletter-form">
+                        <input type="email" name="newsletter" id="newsletter" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </section>
+
+    </main>
+
+    <aside class="drawer">
+        <div class="cart-header">
+            <button class="close-cart-btn"><i class="fa-duotone fa-solid fa-xmark"></i></button>
+            <h1 class="cart-title">Your shopping cart</h1>
+        </div>
+        <div class="cart-content">
+            <p class="cart-empty-message"></p>
+            <ul class="cart-list">
+                <li class="cart-item">
+                    <div class="cart-img-container">
+                        <img src="./images/polo-aqua.webp" />
+                    </div>
+                    <div class="cart-item-content">
+                        <div class="cart-item-content">
+                            <p class="cart-item-name">Polo</p>
+                            <p class="cart-item-quantity">Quantity: 2</p>
+                            <p class="cart-item-size">Size: l</p>
+                        </div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <button><i class="fa-solid fa-minus"></i></button>
+                        <button><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <button class="remove-btn"><i class="fa-solid fa-xmark"></i></button>
+                </li>
+            </ul>
+        </div>
+        <div class="cart-footer">
+            <p class="total">Total: <span class="sum"></span></p>
+        </div>
+    </aside>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 E-Commerce. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>
