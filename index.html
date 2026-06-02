@@ -23,17 +23,21 @@
         <div class="container">
             <nav class="main-nav">
                 <a href="./index.html" class="logo">MONO</a>
-                <ul class="nav-links">
-                    <li>
-                        <a href="./index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="./products.html">Products</a>
-                    </li>
-                    <li>
-                        <button class="cart-btn">Your Cart (<span class="items-number">7</span>)</button>
-                    </li>
-                </ul>
+                <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="menu-drawer">
+                    <button class="close-menu-btn"><i class="fa-solid fa-xmark"></i></button>
+                    <ul class="nav-links">
+                        <li>
+                            <a href="./index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="./products.html">Products</a>
+                        </li>
+                        <li>
+                            <button class="cart-btn">Your Cart (<span class="items-number">7</span>)</button>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
@@ -106,7 +110,7 @@
 
     </main>
 
-    <aside class="drawer">
+    <aside class="cart-drawer">
         <div class="cart-header">
             <button class="close-cart-btn"><i class="fa-duotone fa-solid fa-xmark"></i></button>
             <h1 class="cart-title">Your shopping cart</h1>

@@ -27,6 +27,10 @@ body {
     color: var(--text-primary);
 }
 
+body.menu-open {
+    overflow: hidden;
+}
+
 a {
     text-decoration: none;
 }
@@ -71,6 +75,11 @@ footer {
     font-weight: 800;
     letter-spacing: 1px;
     color: #111827;
+}
+
+.menu-btn,
+.close-menu-btn {
+    display: none;
 }
 
 .main-nav {
@@ -427,7 +436,7 @@ footer {
     visibility: visible;
 }
 
-.drawer {
+.cart-drawer {
     position: fixed;
     top: 0;
     right: 0;
@@ -446,7 +455,7 @@ footer {
     transition: transform 0.3s ease-in;
 }
 
-.drawer.open {
+.cart-drawer.open {
     transform: translateX(0);
 }
 
@@ -573,6 +582,51 @@ footer {
 }
 
 @media (max-width:678px) {
+
+    .menu-btn,
+    .close-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        color: #111111;
+        background: transparent;
+    }
+
+    .close-menu-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .menu-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px;
+        max-width: 80%;
+        height: 100vh;
+        background: #FAFAFA;
+        z-index: 1000;
+        pointer-events: none;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .menu-drawer.open {
+        pointer-events: auto;
+        transform: translateX(0);
+    }
+
+    .nav-links {
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+    }
+
     .hero {
         height: 65vh;
         min-height: 500px;
@@ -587,9 +641,15 @@ footer {
         flex-direction: column;
         gap: 5rem;
     }
+
+    .cart-drawer {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+    }
 }
 
-@media (min-width:678px) and (max-width:1400px) {
+@media (min-width:679px) and (max-width:1400px) {
 
     .product-list,
     .featured-product-list {

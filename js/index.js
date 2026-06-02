@@ -3,8 +3,11 @@ const featuredList = document.querySelector('.featured-product-list')
 const productList = document.querySelector('.product-list')
 const cartBtn = document.querySelector('.cart-btn')
 const overlay = document.querySelector('.overlay')
-const drawer = document.querySelector('.drawer')
+const cartDrawer = document.querySelector('.cart-drawer')
 const closeCartBtn = document.querySelector('.close-cart-btn')
+const menuBtn = document.querySelector('.menu-btn')
+const drawerMenu = document.querySelector('.menu-drawer')
+const closeMenuBtn = document.querySelector('.close-menu-btn')
 
 function renderProducts(data, container) {
     data.forEach((item) => {
@@ -72,15 +75,51 @@ if (featuredList) {
     renderProducts(featured, featuredList)
 }
 
-function openShoppingCart() {
+function openMobileMenu() {
     overlay.classList.add('active')
-    drawer.classList.add('open')
+    drawerMenu.classList.add('open')
+    document.body.classList.add("menu-open");
 }
+
+function closeMobileMenu() {
+    overlay.classList.remove('active')
+    drawerMenu.classList.remove('open')
+    document.body.classList.remove("menu-open");
+}
+
+function openShoppingCart() {
+    if (drawerMenu.classList.contains('open')) {
+        drawerMenu.classList.remove('open')
+
+        setTimeout(() => {
+            cartDrawer.classList.add('open')
+        }, 300)
+    } else {
+        cartDrawer.classList.add('open')
+        document.body.classList.remove('menu-open');
+    }
+
+    overlay.classList.add('active')
+}
+
 function closeShoppingCart() {
     overlay.classList.remove('active')
-    drawer.classList.remove('open')
+    cartDrawer.classList.remove('open')
+    drawerMenu.classList.remove('open')
+    document.body.classList.remove('menu-open');
 }
+
+menuBtn.addEventListener('click', openMobileMenu)
+closeMenuBtn.addEventListener('click', closeMobileMenu)
 
 cartBtn.addEventListener('click', openShoppingCart)
 overlay.addEventListener('click', closeShoppingCart)
 closeCartBtn.addEventListener('click', closeShoppingCart)
+
+window.addEventListener('resize', function () {
+    if (window.innerWidth > 678) {
+        drawerMenu.classList.remove("open");
+        overlay.classList.remove("active");
+        document.body.classList.remove("menu-open");
+    }
+})
