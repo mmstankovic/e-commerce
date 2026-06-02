@@ -8,6 +8,13 @@ const closeCartBtn = document.querySelector('.close-cart-btn')
 const menuBtn = document.querySelector('.menu-btn')
 const drawerMenu = document.querySelector('.menu-drawer')
 const closeMenuBtn = document.querySelector('.close-menu-btn')
+const cartList = document.querySelector('.cart-list')
+const cartEmptyMessage = document.querySelector('.cart-empty-message')
+const sumSpan = document.querySelector('.sum')
+const cartItemsNum = document.querySelector('.items-number')
+
+let cart = []
+let selectedSizes = {}
 
 function renderProducts(data, container) {
     data.forEach((item) => {
@@ -75,6 +82,95 @@ if (featuredList) {
     renderProducts(featured, featuredList)
 }
 
+function renderCart() {
+    cartList.textContent = ''
+    cartEmptyMessage.textContent = ''
+
+    if (cart.length === 0) {
+        cartEmptyMessage.textContent = 'Your cart is currently empty'
+        return
+    }
+
+    cart.forEach((item) => {
+        const li = document.createElement('li')
+        li.id = item.id
+        li.classList.add('cart-item')
+
+        const imageContainer = document.createElement('div')
+        imageContainer.classList.add('cart-img-container')
+        const cartImg = document.createElement('img')
+        cartImg.src = item.image
+        imageContainer.appendChild(cartImg)
+
+        const cartItemContent = document.createElement('div')
+        cartItemContent.classList.add('cart-item-content')
+
+        const name = document.createElement('p')
+        name.textContent = item.name
+        name.classList.add('cart-item-name')
+        const quantity = document.createElement('p')
+        quantity.textContent = `Quantity: ${item.quantity}`
+        quantity.classList.add('cart-item-quantity')
+        const size = document.createElement('p')
+        size.textContent = `Size: ${item.size}`
+        size.classList.add('cart-item-size')
+
+        cartItemContent.append(name, quantity, size)
+
+        const cartItemActions = document.createElement('div')
+        cartItemActions.classList.add('cart-item-actions')
+
+        const decreaseBtn = document.createElement('button')
+        decreaseBtn.innerHTML = `<i class="fa-solid fa-minus"></i>`
+        decreaseBtn.classList.add('decrease-btn')
+
+        const increaseBtn = document.createElement('button')
+        increaseBtn.innerHTML = `<i class="fa-solid fa-plus"></i>`
+        increaseBtn.classList.add('increase-btn')
+
+        cartItemActions.append(decreaseBtn, increaseBtn)
+
+        const removeBtn = document.createElement('button')
+        removeBtn.innerHTML = `<i class="fa-solid fa-xmark"></i>`
+        removeBtn.classList.add('remove-btn')
+
+        li.append(imageContainer, cartItemContent, cartItemActions, removeBtn)
+
+        cartList.appendChild(li)
+    })
+
+
+    const totalAmount = cart.reduce((acc, item) => acc += item.price * item.quantity, 0)
+
+    sumSpan.textContent = `$${totalAmount.toLocaleString('en-US')}`
+}
+
+renderCart()
+
+function updateCartItemsNum() {
+    cartItemsNum.textContent = cart.reduce((acc, item) => acc += item.quantity, 0)
+}
+
+updateCartItemsNum()
+
+function addItemToCart(newItem, size) {
+    const existingCartItem = cart.find((item) => item.id === newItem.id && item.size === size)
+
+    if (existingCartItem) {
+        cart = cart.map((item) => item.id === newItem.id && item.size === size ? ({ ...item, quantity: item.quantity + 1 }) : item)
+    } else {
+        cart = [...cart, {
+            ...newItem,
+            cartId: `${newItem.id}-${size}`,
+            size,
+            quantity: 1
+        }]
+    }
+
+    updateCartItemsNum()
+    renderCart()
+}
+
 function openMobileMenu() {
     overlay.classList.add('active')
     drawerMenu.classList.add('open')
@@ -115,6 +211,40 @@ closeMenuBtn.addEventListener('click', closeMobileMenu)
 cartBtn.addEventListener('click', openShoppingCart)
 overlay.addEventListener('click', closeShoppingCart)
 closeCartBtn.addEventListener('click', closeShoppingCart)
+
+productList.addEventListener('click', (e) => {
+    const sizeBtn = e.target.closest('.size-btn')
+
+    if (sizeBtn) {
+        const productItem = e.target.closest('.product-item')
+        const productdId = Number(productItem.id)
+        const size = sizeBtn.dataset.size
+
+        selectedSizes[productdId] = size
+
+        const allSizes = productItem.querySelectorAll('.size-btn')
+        allSizes.forEach((btn) => btn.classList.remove('selected'))
+
+        sizeBtn.classList.add('selected')
+        return
+    }
+    const addBtn = e.target.closest('.add-btn')
+
+    if (!addBtn) return
+
+    const li = addBtn.closest('.product-item')
+    const id = Number(li.id)
+
+    const selected = selectedSizes[id]
+
+    if (!selected) {
+        alert('Please select a size')
+        return
+    }
+    const product = products.find((item) => item.id === id)
+
+    addItemToCart(product, selected)
+})
 
 window.addEventListener('resize', function () {
     if (window.innerWidth > 678) {
