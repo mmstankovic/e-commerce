@@ -14,7 +14,7 @@ const sumSpan = document.querySelector('.sum')
 const cartItemsNum = document.querySelector('.items-number')
 const allProducts = document.querySelector('.products')
 
-let cart = []
+let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
 
 function renderProducts(data, container) {
@@ -156,6 +156,16 @@ function updateCartItemsNum() {
 
 updateCartItemsNum()
 
+function saveToStorage() {
+    localStorage.setItem('shopping-cart', JSON.stringify(cart))
+}
+
+function updateCart() {
+    updateCartItemsNum()
+    renderCart()
+    saveToStorage()
+}
+
 function addItemToCart(newItem, size) {
     const existingCartItem = cart.find((item) => item.id === newItem.id && item.size === size)
 
@@ -170,15 +180,13 @@ function addItemToCart(newItem, size) {
         }]
     }
 
-    updateCartItemsNum()
-    renderCart()
+    updateCart()
 }
 
 function increaseCartItemQuantity(cartId) {
     cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity + 1 }) : item)
 
-    updateCartItemsNum()
-    renderCart()
+    updateCart()
 }
 
 function decreaseCartItemQuantity(cartId) {
@@ -192,15 +200,13 @@ function decreaseCartItemQuantity(cartId) {
         cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity - 1 }) : item)
     }
 
-    updateCartItemsNum()
-    renderCart()
+    updateCart()
 }
 
 function removeItemFromCart(cartId) {
     cart = cart.filter((item) => item.cartId !== cartId)
 
-    updateCartItemsNum()
-    renderCart()
+    updateCart()
 }
 
 function openMobileMenu() {
