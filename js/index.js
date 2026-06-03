@@ -85,6 +85,7 @@ if (featuredList) {
 function renderCart() {
     cartList.textContent = ''
     cartEmptyMessage.textContent = ''
+    sumSpan.textContent = ''
 
     if (cart.length === 0) {
         cartEmptyMessage.textContent = 'Your cart is currently empty'
@@ -94,6 +95,7 @@ function renderCart() {
     cart.forEach((item) => {
         const li = document.createElement('li')
         li.id = item.id
+        li.dataset.cartId = item.cartId
         li.classList.add('cart-item')
 
         const imageContainer = document.createElement('div')
@@ -171,6 +173,35 @@ function addItemToCart(newItem, size) {
     renderCart()
 }
 
+function increaseCartItemQuantity(cartId) {
+    cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity + 1 }) : item)
+
+    updateCartItemsNum()
+    renderCart()
+}
+
+function decreaseCartItemQuantity(cartId) {
+    const cartItem = cart.find((item) => item.cartId === cartId)
+
+    if (!cartItem) return
+
+    if (cartItem.quantity === 1) {
+        cart = cart.filter((item) => item.cartId !== cartId)
+    } else {
+        cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity - 1 }) : item)
+    }
+
+    updateCartItemsNum()
+    renderCart()
+}
+
+function removeItemFromCart(cartId) {
+    cart = cart.filter((item) => item.cartId !== cartId)
+
+    updateCartItemsNum()
+    renderCart()
+}
+
 function openMobileMenu() {
     overlay.classList.add('active')
     drawerMenu.classList.add('open')
@@ -217,10 +248,10 @@ productList.addEventListener('click', (e) => {
 
     if (sizeBtn) {
         const productItem = e.target.closest('.product-item')
-        const productdId = Number(productItem.id)
+        const productId = Number(productItem.id)
         const size = sizeBtn.dataset.size
 
-        selectedSizes[productdId] = size
+        selectedSizes[productId] = size
 
         const allSizes = productItem.querySelectorAll('.size-btn')
         allSizes.forEach((btn) => btn.classList.remove('selected'))
@@ -244,6 +275,26 @@ productList.addEventListener('click', (e) => {
     const product = products.find((item) => item.id === id)
 
     addItemToCart(product, selected)
+})
+
+cartList.addEventListener('click', (e) => {
+    const cartItem = e.target.closest('.cart-item')
+
+    if (!cartItem) return
+
+    const cartId = cartItem.dataset.cartId
+
+    if (e.target.closest('.increase-btn')) {
+        increaseCartItemQuantity(cartId)
+    }
+
+    if (e.target.closest('.decrease-btn')) {
+        decreaseCartItemQuantity(cartId)
+    }
+
+    if (e.target.closest('.remove-btn')) {
+        removeItemFromCart(cartId)
+    }
 })
 
 window.addEventListener('resize', function () {
