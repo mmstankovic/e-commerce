@@ -504,6 +504,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap:0.75rem;
 }
 
 .cart-img-container {
@@ -521,6 +522,8 @@ footer {
 }
 
 .cart-item-content {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -529,6 +532,9 @@ footer {
 .cart-item-name {
     font-size: 14px;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cart-item-quantity {

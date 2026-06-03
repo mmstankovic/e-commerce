@@ -12,6 +12,7 @@ const cartList = document.querySelector('.cart-list')
 const cartEmptyMessage = document.querySelector('.cart-empty-message')
 const sumSpan = document.querySelector('.sum')
 const cartItemsNum = document.querySelector('.items-number')
+const allProducts = document.querySelector('.products')
 
 let cart = []
 let selectedSizes = {}
@@ -243,7 +244,7 @@ cartBtn.addEventListener('click', openShoppingCart)
 overlay.addEventListener('click', closeShoppingCart)
 closeCartBtn.addEventListener('click', closeShoppingCart)
 
-productList.addEventListener('click', (e) => {
+allProducts.addEventListener('click', (e) => {
     const sizeBtn = e.target.closest('.size-btn')
 
     if (sizeBtn) {
