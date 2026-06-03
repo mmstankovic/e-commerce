@@ -13,6 +13,7 @@ const cartEmptyMessage = document.querySelector('.cart-empty-message')
 const sumSpan = document.querySelector('.sum')
 const cartItemsNum = document.querySelector('.items-number')
 const allProducts = document.querySelector('.products')
+const checkoutBtn = document.querySelector('.checkout-btn')
 
 let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
@@ -90,6 +91,7 @@ function renderCart() {
 
     if (cart.length === 0) {
         cartEmptyMessage.textContent = 'Your cart is currently empty'
+        checkoutBtn.disabled = true
         return
     }
 
@@ -146,6 +148,7 @@ function renderCart() {
     const totalAmount = cart.reduce((acc, item) => acc += item.price * item.quantity, 0)
 
     sumSpan.textContent = `$${totalAmount.toLocaleString('en-US')}`
+    checkoutBtn.disabled = false
 }
 
 renderCart()

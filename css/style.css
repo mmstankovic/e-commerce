@@ -282,6 +282,10 @@ footer {
     background-color: var(--primary-hover);
 }
 
+.available-products {
+    padding-bottom: 4rem;
+}
+
 .product-list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -504,7 +508,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap:0.75rem;
+    gap: 0.75rem;
 }
 
 .cart-img-container {
@@ -591,6 +595,42 @@ footer {
     font-weight: 600;
 }
 
+.total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 15px;
+    color: var(--text-secondary);
+}
+.sum {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.checkout-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.5rem 0.7rem;
+    background-color: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.checkout-btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .cart-empty-message {
     margin-top: 2.5rem;
     text-align: center;
@@ -645,6 +685,12 @@ footer {
     .hero {
         height: 65vh;
         min-height: 500px;
+    }
+
+    .featured-products,
+    .benefits,
+    .newsletter {
+        padding: 3rem 0;
     }
 
     .product-list,
