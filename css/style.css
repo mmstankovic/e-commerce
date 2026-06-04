@@ -602,6 +602,7 @@ footer {
     font-size: 15px;
     color: var(--text-secondary);
 }
+
 .sum {
     font-size: 18px;
     font-weight: 700;
@@ -635,6 +636,46 @@ footer {
     margin-top: 2.5rem;
     text-align: center;
     color: orange;
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+    z-index: 9999;
+}
+
+.toast {
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 0.5rem;
+    min-width: 250px;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast.success {
+    background: #ECFDF5;
+    color: #047857;
+}
+
+.toast.error {
+    background: #FEF2F2;
+    color: #B91C1C;
+}
+
+.toast.info {
+    background: #EEF2FF;
+    color: #4F46E5;
 }
 
 @media (max-width:678px) {

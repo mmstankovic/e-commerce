@@ -14,6 +14,7 @@ const sumSpan = document.querySelector('.sum')
 const cartItemsNum = document.querySelector('.items-number')
 const allProducts = document.querySelector('.products')
 const checkoutBtn = document.querySelector('.checkout-btn')
+const toastContainer = document.querySelector('.toast-container')
 
 let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
@@ -169,6 +170,26 @@ function updateCart() {
     saveToStorage()
 }
 
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div')
+    toast.textContent = message
+    toast.classList.add('toast', type)
+
+    toastContainer.appendChild(toast)
+
+    setTimeout(() => {
+        toast.classList.add('show')
+    }, 10)
+
+    setTimeout(() => {
+        toast.classList.remove('show')
+
+        setTimeout(() => {
+            toast.remove()
+        }, 300)
+    }, 2000)
+}
+
 function addItemToCart(newItem, size) {
     const existingCartItem = cart.find((item) => item.id === newItem.id && item.size === size)
 
@@ -184,6 +205,7 @@ function addItemToCart(newItem, size) {
     }
 
     updateCart()
+    showToast('Added to cart')
 }
 
 function increaseCartItemQuantity(cartId) {
@@ -210,6 +232,7 @@ function removeItemFromCart(cartId) {
     cart = cart.filter((item) => item.cartId !== cartId)
 
     updateCart()
+    showToast('Product removed', 'error')
 }
 
 function openMobileMenu() {
@@ -279,7 +302,7 @@ allProducts.addEventListener('click', (e) => {
     const selected = selectedSizes[id]
 
     if (!selected) {
-        alert('Please select a size')
+        showToast('Please select a size', 'info')
         return
     }
     const product = products.find((item) => item.id === id)
