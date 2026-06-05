@@ -15,12 +15,22 @@ const cartItemsNum = document.querySelector('.items-number')
 const allProducts = document.querySelector('.products')
 const checkoutBtn = document.querySelector('.checkout-btn')
 const toastContainer = document.querySelector('.toast-container')
+const searchInputElement = document.querySelector('.search-input')
 
 let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
+let searchInput = ''
 
 function renderProducts(data, container) {
-    data.forEach((item) => {
+    container.innerHTML = ''
+
+    let dataToDisplay = [...data]
+
+    if (searchInput.length > 0) {
+        dataToDisplay = dataToDisplay.filter((item) => item.name.toLowerCase().includes(searchInput))
+    }
+
+    dataToDisplay.forEach((item) => {
         const li = document.createElement('li')
         li.classList.add('product-item')
         li.id = item.id
@@ -159,6 +169,17 @@ function updateCartItemsNum() {
 }
 
 updateCartItemsNum()
+
+let timer
+
+function setSearchTerm(val) {
+    clearTimeout(timer)
+
+    timer = setTimeout(() => {
+        searchInput = val
+        renderProducts(products, productList)
+    }, 200)
+}
 
 function saveToStorage() {
     localStorage.setItem('shopping-cart', JSON.stringify(cart))
@@ -329,6 +350,14 @@ cartList.addEventListener('click', (e) => {
         removeItemFromCart(cartId)
     }
 })
+
+if (searchInputElement) {
+    searchInputElement.addEventListener('input', (e) => {
+        const normalizedQuery = e.target.value.trim().toLowerCase()
+
+        setSearchTerm(normalizedQuery)
+    })
+}
 
 window.addEventListener('resize', function () {
     if (window.innerWidth > 678) {
