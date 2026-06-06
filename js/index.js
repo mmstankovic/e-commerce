@@ -18,11 +18,13 @@ const toastContainer = document.querySelector('.toast-container')
 const searchInputElement = document.querySelector('.search-input')
 const categorySelect = document.querySelector('.category')
 const noProductsMessage = document.querySelector('.no-products-message')
+const sortSelect = document.querySelector('.sort')
 
 let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
 let searchInput = ''
 let selectedCategory = ''
+let activeSort = ''
 
 function renderProducts(data, container) {
     noProductsMessage.textContent = ''
@@ -35,6 +37,12 @@ function renderProducts(data, container) {
     }
     if (selectedCategory) {
         dataToDisplay = dataToDisplay.filter((item) => item.category.toLowerCase() === selectedCategory)
+    }
+
+    if (activeSort === 'low') {
+        dataToDisplay = [...dataToDisplay].sort((a, b) => a.price - b.price)
+    } else if (activeSort === 'high') {
+        dataToDisplay = [...dataToDisplay].sort((a, b) => b.price - a.price)
     }
 
     if (dataToDisplay.length === 0) {
@@ -388,6 +396,13 @@ if (categorySelect) {
 
     categorySelect.addEventListener('change', (e) => {
         selectedCategory = e.target.value
+        renderProducts(products, productList)
+    })
+}
+if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+        activeSort = e.target.value
+
         renderProducts(products, productList)
     })
 }
