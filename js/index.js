@@ -16,18 +16,30 @@ const allProducts = document.querySelector('.products')
 const checkoutBtn = document.querySelector('.checkout-btn')
 const toastContainer = document.querySelector('.toast-container')
 const searchInputElement = document.querySelector('.search-input')
+const categorySelect = document.querySelector('.category')
+const noProductsMessage = document.querySelector('.no-products-message')
 
 let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
 let searchInput = ''
+let selectedCategory = ''
 
 function renderProducts(data, container) {
+    noProductsMessage.textContent = ''
     container.innerHTML = ''
 
     let dataToDisplay = [...data]
 
     if (searchInput.length > 0) {
         dataToDisplay = dataToDisplay.filter((item) => item.name.toLowerCase().includes(searchInput))
+    }
+    if (selectedCategory) {
+        dataToDisplay = dataToDisplay.filter((item) => item.category.toLowerCase() === selectedCategory)
+    }
+
+    if (dataToDisplay.length === 0) {
+        noProductsMessage.textContent = 'No matching products found.'
+        return
     }
 
     dataToDisplay.forEach((item) => {
@@ -93,6 +105,19 @@ if (productList) {
 
 if (featuredList) {
     renderProducts(featured, featuredList)
+}
+
+function renderFilterOptions() {
+    const unique = [...new Set(products.map((item) => item.category))]
+    const sorted = unique.sort((a, b) => a.localeCompare(b))
+
+    sorted.forEach((opt) => {
+        const option = document.createElement('option')
+        option.textContent = opt
+        option.value = opt.toLowerCase()
+
+        categorySelect.appendChild(option)
+    })
 }
 
 function renderCart() {
@@ -356,6 +381,14 @@ if (searchInputElement) {
         const normalizedQuery = e.target.value.trim().toLowerCase()
 
         setSearchTerm(normalizedQuery)
+    })
+}
+if (categorySelect) {
+    renderFilterOptions()
+
+    categorySelect.addEventListener('change', (e) => {
+        selectedCategory = e.target.value
+        renderProducts(products, productList)
     })
 }
 
