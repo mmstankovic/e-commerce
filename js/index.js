@@ -27,7 +27,9 @@ let selectedCategory = ''
 let activeSort = ''
 
 function renderProducts(data, container) {
-    noProductsMessage.textContent = ''
+    if (noProductsMessage) {
+        noProductsMessage.textContent = ''
+    }
     container.innerHTML = ''
 
     let dataToDisplay = [...data]
@@ -46,7 +48,9 @@ function renderProducts(data, container) {
     }
 
     if (dataToDisplay.length === 0) {
-        noProductsMessage.textContent = 'No matching products found.'
+        if (noProductsMessage) {
+            noProductsMessage.textContent = 'No matching products found.'
+        }
         return
     }
 
@@ -197,6 +201,19 @@ function renderCart() {
 
 renderCart()
 
+let refreshTimer
+
+function refreshProducts() {
+    clearTimeout(refreshTimer)
+
+    productList.style.opacity = '0';
+
+    refreshTimer = setTimeout(() => {
+        renderProducts(products, productList);
+        productList.style.opacity = '1';
+    }, 200);
+}
+
 function updateCartItemsNum() {
     cartItemsNum.textContent = cart.reduce((acc, item) => acc += item.quantity, 0)
 }
@@ -210,7 +227,7 @@ function setSearchTerm(val) {
 
     timer = setTimeout(() => {
         searchInput = val
-        renderProducts(products, productList)
+        refreshProducts()
     }, 200)
 }
 
@@ -396,14 +413,14 @@ if (categorySelect) {
 
     categorySelect.addEventListener('change', (e) => {
         selectedCategory = e.target.value
-        renderProducts(products, productList)
+        refreshProducts()
     })
 }
 if (sortSelect) {
     sortSelect.addEventListener('change', (e) => {
         activeSort = e.target.value
 
-        renderProducts(products, productList)
+        refreshProducts()
     })
 }
 

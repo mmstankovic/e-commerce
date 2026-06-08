@@ -381,6 +381,7 @@ footer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    transition: opacity .2s ease;
 }
 
 .featured-products {
