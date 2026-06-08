@@ -1,4 +1,5 @@
 import { products } from '../data/products.js'
+import { getCart, addItemToCart, increaseCartItemQuantity, decreaseCartItemQuantity, removeItemFromCart } from './cart.js'
 const featuredList = document.querySelector('.featured-product-list')
 const productList = document.querySelector('.product-list')
 const cartBtn = document.querySelector('.cart-btn')
@@ -20,7 +21,6 @@ const categorySelect = document.querySelector('.category')
 const noProductsMessage = document.querySelector('.no-products-message')
 const sortSelect = document.querySelector('.sort')
 
-let cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
 let selectedSizes = {}
 let searchInput = ''
 let selectedCategory = ''
@@ -132,7 +132,7 @@ function renderFilterOptions() {
     })
 }
 
-function renderCart() {
+function renderCart(cart) {
     cartList.textContent = ''
     cartEmptyMessage.textContent = ''
     sumSpan.textContent = ''
@@ -199,11 +199,11 @@ function renderCart() {
     checkoutBtn.disabled = false
 }
 
-renderCart()
-
 let refreshTimer
 
 function refreshProducts() {
+    if (!productList) return
+    
     clearTimeout(refreshTimer)
 
     productList.style.opacity = '0';
@@ -214,11 +214,11 @@ function refreshProducts() {
     }, 200);
 }
 
-function updateCartItemsNum() {
+function updateCartItemsNum(cart) {
     cartItemsNum.textContent = cart.reduce((acc, item) => acc += item.quantity, 0)
 }
 
-updateCartItemsNum()
+updateCart()
 
 let timer
 
@@ -231,14 +231,10 @@ function setSearchTerm(val) {
     }, 200)
 }
 
-function saveToStorage() {
-    localStorage.setItem('shopping-cart', JSON.stringify(cart))
-}
-
 function updateCart() {
-    updateCartItemsNum()
-    renderCart()
-    saveToStorage()
+    const cart = getCart()
+    updateCartItemsNum(cart)
+    renderCart(cart)
 }
 
 function showToast(message, type = 'success') {
@@ -259,51 +255,6 @@ function showToast(message, type = 'success') {
             toast.remove()
         }, 300)
     }, 2000)
-}
-
-function addItemToCart(newItem, size) {
-    const existingCartItem = cart.find((item) => item.id === newItem.id && item.size === size)
-
-    if (existingCartItem) {
-        cart = cart.map((item) => item.id === newItem.id && item.size === size ? ({ ...item, quantity: item.quantity + 1 }) : item)
-    } else {
-        cart = [...cart, {
-            ...newItem,
-            cartId: `${newItem.id}-${size}`,
-            size,
-            quantity: 1
-        }]
-    }
-
-    updateCart()
-    showToast('Added to cart')
-}
-
-function increaseCartItemQuantity(cartId) {
-    cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity + 1 }) : item)
-
-    updateCart()
-}
-
-function decreaseCartItemQuantity(cartId) {
-    const cartItem = cart.find((item) => item.cartId === cartId)
-
-    if (!cartItem) return
-
-    if (cartItem.quantity === 1) {
-        cart = cart.filter((item) => item.cartId !== cartId)
-    } else {
-        cart = cart.map((item) => item.cartId === cartId ? ({ ...item, quantity: item.quantity - 1 }) : item)
-    }
-
-    updateCart()
-}
-
-function removeItemFromCart(cartId) {
-    cart = cart.filter((item) => item.cartId !== cartId)
-
-    updateCart()
-    showToast('Product removed', 'error')
 }
 
 function openMobileMenu() {
@@ -379,6 +330,8 @@ allProducts.addEventListener('click', (e) => {
     const product = products.find((item) => item.id === id)
 
     addItemToCart(product, selected)
+    updateCart()
+    showToast('Added to cart')
 })
 
 cartList.addEventListener('click', (e) => {
@@ -390,14 +343,18 @@ cartList.addEventListener('click', (e) => {
 
     if (e.target.closest('.increase-btn')) {
         increaseCartItemQuantity(cartId)
+        updateCart()
     }
 
     if (e.target.closest('.decrease-btn')) {
         decreaseCartItemQuantity(cartId)
+        updateCart()
     }
 
     if (e.target.closest('.remove-btn')) {
         removeItemFromCart(cartId)
+        updateCart()
+        showToast('Product removed', 'error')
     }
 })
 
